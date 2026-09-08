@@ -15,7 +15,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: migrate
-          image: reg.test.local:5000/novamarket/db-migrations:1.0.0
+          image: reg.test.local:8082/novamarket/db-migrations:1.0.1
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
