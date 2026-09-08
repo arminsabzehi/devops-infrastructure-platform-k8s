@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  backoffLimit: 4
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app: db-migrate
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: migrate
+          image: reg.test.local:5000/novamarket/db-migrations:1.0.0
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: postgres-secret
+          env:
+            - name: PGHOST
+              value: db
+            - name: PGPORT
+              value: "5432"
+          command: ["sh", "-c"]
+          args:
+            - |
+              set -eu
+              echo "Waiting for PostgreSQL..."
+              until pg_isready -h "$PGHOST" -p "$PGPORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB"; do
+                sleep 3
+              done
+              echo "PostgreSQL is ready."
+
+              for migration in \
+                /migrations/000_init.sql \
+                /migrations/002_marketplace.sql \
+                /migrations/003_catalog_seed.sql \
+                /migrations/004_product_details.sql
+              do
+                echo "Applying ${migration}..."
+                psql -v ON_ERROR_STOP=1 \
+                  -h "$PGHOST" -p "$PGPORT" \
+                  -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
+                  -f "$migration"
+              done
+
+              echo "Database migrations completed successfully."
