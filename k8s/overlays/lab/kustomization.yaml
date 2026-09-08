@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: digino
 resources:
   - ../../base
-  - ingress.yaml
 
 images:
   - name: novamarket/gateway
