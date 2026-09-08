@@ -25,6 +25,11 @@ spec:
               value: db
             - name: PGPORT
               value: "5432"
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
           command: ["sh", "-c"]
           args:
             - |
