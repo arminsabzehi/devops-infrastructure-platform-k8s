@@ -4,6 +4,7 @@ namespace: digino
 resources:
   - namespace.yaml
   - postgres.yaml
+  - db-migrate.yaml
   - gateway.yaml
   - web.yaml
   - apis.yaml
