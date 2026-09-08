@@ -55,6 +55,7 @@ kind: Service
 metadata:
   name: gateway
 spec:
+  type: LoadBalancer
   selector:
     app: gateway
   ports:
