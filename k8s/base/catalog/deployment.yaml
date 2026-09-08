@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: catalog
-          image: novamarket/catalog:1.4.0
+          image: reg.test.local:8082/novamarket/catalog:1.4.1
           ports:
             - containerPort: 3000
           env:
