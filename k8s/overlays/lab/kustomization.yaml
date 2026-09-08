@@ -7,68 +7,68 @@ resources:
 
 images:
   - name: novamarket/gateway
-    newName: registry.test.local:5000/novamarket/gateway
+    newName: reg.test.local:5000/novamarket/gateway
     newTag: "1.1.2"
   - name: novamarket/frontend
-    newName: registry.test.local:5000/novamarket/frontend
+    newName: reg.test.local:5000/novamarket/frontend
     newTag: "1.2.0"
   - name: novamarket/shop
-    newName: registry.test.local:5000/novamarket/shop
+    newName: reg.test.local:5000/novamarket/shop
     newTag: "1.1.0"
   - name: novamarket/product
-    newName: registry.test.local:5000/novamarket/product
+    newName: reg.test.local:5000/novamarket/product
     newTag: "1.0.0"
   - name: novamarket/about
-    newName: registry.test.local:5000/novamarket/about
+    newName: reg.test.local:5000/novamarket/about
     newTag: "1.1.0"
   - name: novamarket/account
-    newName: registry.test.local:5000/novamarket/account
+    newName: reg.test.local:5000/novamarket/account
     newTag: "1.0.0"
   - name: novamarket/orders
-    newName: registry.test.local:5000/novamarket/orders
+    newName: reg.test.local:5000/novamarket/orders
     newTag: "1.0.0"
   - name: novamarket/checkout
-    newName: registry.test.local:5000/novamarket/checkout
+    newName: reg.test.local:5000/novamarket/checkout
     newTag: "1.0.0"
   - name: novamarket/admin
-    newName: registry.test.local:5000/novamarket/admin
+    newName: reg.test.local:5000/novamarket/admin
     newTag: "1.0.0"
   - name: novamarket/backend
-    newName: registry.test.local:5000/novamarket/backend
+    newName: reg.test.local:5000/novamarket/backend
     newTag: "1.0.1"
   - name: novamarket/catalog
-    newName: registry.test.local:5000/novamarket/catalog
+    newName: reg.test.local:5000/novamarket/catalog
     newTag: "1.2.0"
   - name: novamarket/cart
-    newName: registry.test.local:5000/novamarket/cart
+    newName: reg.test.local:5000/novamarket/cart
     newTag: "1.1.0"
   - name: novamarket/user
-    newName: registry.test.local:5000/novamarket/user
+    newName: reg.test.local:5000/novamarket/user
     newTag: "1.1.0"
   - name: novamarket/orders-api
-    newName: registry.test.local:5000/novamarket/orders-api
+    newName: reg.test.local:5000/novamarket/orders-api
     newTag: "1.1.0"
   - name: novamarket/payment
-    newName: registry.test.local:5000/novamarket/payment
+    newName: reg.test.local:5000/novamarket/payment
     newTag: "1.1.0"
   - name: novamarket/shipping
-    newName: registry.test.local:5000/novamarket/shipping
+    newName: reg.test.local:5000/novamarket/shipping
     newTag: "1.1.0"
   - name: novamarket/search
-    newName: registry.test.local:5000/novamarket/search
+    newName: reg.test.local:5000/novamarket/search
     newTag: "1.1.0"
   - name: novamarket/wishlist
-    newName: registry.test.local:5000/novamarket/wishlist
+    newName: reg.test.local:5000/novamarket/wishlist
     newTag: "1.1.0"
   - name: novamarket/reviews
-    newName: registry.test.local:5000/novamarket/reviews
+    newName: reg.test.local:5000/novamarket/reviews
     newTag: "1.1.0"
   - name: novamarket/notification
-    newName: registry.test.local:5000/novamarket/notification
+    newName: reg.test.local:5000/novamarket/notification
     newTag: "1.1.0"
   - name: novamarket/discount
-    newName: registry.test.local:5000/novamarket/discount
+    newName: reg.test.local:5000/novamarket/discount
     newTag: "1.1.0"
   - name: postgres
-    newName: registry.test.local:5000/library/postgres
+    newName: reg.test.local:5000/library/postgres
     newTag: "16.4-alpine"
