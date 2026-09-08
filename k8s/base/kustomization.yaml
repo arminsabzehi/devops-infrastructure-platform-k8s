@@ -6,5 +6,25 @@ resources:
   - postgres.yaml
   - db-migrate.yaml
   - gateway.yaml
-  - web.yaml
-  - apis.yaml
+  - frontend/deployment.yaml
+  - frontend/service.yaml
+  - shop/deployment.yaml
+  - product/deployment.yaml
+  - about/deployment.yaml
+  - account/deployment.yaml
+  - orders/deployment.yaml
+  - checkout/deployment.yaml
+  - admin/deployment.yaml
+  - backend/deployment.yaml
+  - catalog/deployment.yaml
+  - catalog/service.yaml
+  - user/deployment.yaml
+  - cart/deployment.yaml
+  - order-service/deployment.yaml
+  - payment/deployment.yaml
+  - shipping/deployment.yaml
+  - search/deployment.yaml
+  - wishlist/deployment.yaml
+  - reviews/deployment.yaml
+  - notification/deployment.yaml
+  - discount/deployment.yaml
