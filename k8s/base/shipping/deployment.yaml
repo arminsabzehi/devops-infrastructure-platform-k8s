@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: shipping}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: shipping}}
+  template:
+    metadata: {labels: {app: shipping}}
+    spec:
+      containers:
+        - name: shipping
+          image: novamarket/shipping:1.1.0
+          ports: [{containerPort: 3000}]
+          env:
+            - {name: PORT, value: "3000"}
+            - {name: SERVICE_NAME, value: shipping}
+            - {name: DATABASE_URL, valueFrom: {secretKeyRef: {name: postgres-secret, key: DATABASE_URL}}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: shipping}
+spec:
+  selector: {app: shipping}
+  ports: [{port: 3000, targetPort: 3000}]
