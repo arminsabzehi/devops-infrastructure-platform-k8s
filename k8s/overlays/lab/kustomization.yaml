@@ -37,7 +37,7 @@ images:
     newTag: "1.0.1"
   - name: novamarket/catalog
     newName: reg.test.local:5000/novamarket/catalog
-    newTag: "1.2.0"
+    newTag: "1.3.0"
   - name: novamarket/cart
     newName: reg.test.local:5000/novamarket/cart
     newTag: "1.1.0"
