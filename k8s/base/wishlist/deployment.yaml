@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: wishlist}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: wishlist}}
+  template:
+    metadata: {labels: {app: wishlist}}
+    spec:
+      containers:
+        - name: wishlist
+          image: novamarket/wishlist:1.1.0
+          ports: [{containerPort: 3000}]
+          env:
+            - {name: PORT, value: "3000"}
+            - {name: SERVICE_NAME, value: wishlist}
+            - {name: DATABASE_URL, valueFrom: {secretKeyRef: {name: postgres-secret, key: DATABASE_URL}}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: wishlist}
+spec:
+  selector: {app: wishlist}
+  ports: [{port: 3000, targetPort: 3000}]
