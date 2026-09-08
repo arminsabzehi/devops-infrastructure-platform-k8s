@@ -15,7 +15,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: migrate
-          image: reg.test.local:8082/novamarket/db-migrations:1.0.3
+          image: reg.test.local:8082/novamarket/db-migrations:1.0.4
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
@@ -45,7 +45,8 @@ spec:
                 /migrations/002_marketplace.sql \
                 /migrations/003_catalog_seed.sql \
                 /migrations/004_product_details.sql \
-                /migrations/005_fix_macbook_image.sql
+                /migrations/005_fix_macbook_image.sql \
+                /migrations/006_fix_dualsense_image.sql
               do
                 echo "Applying ${migration}..."
                 psql -v ON_ERROR_STOP=1 \
