@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: discount}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: discount}}
+  template:
+    metadata: {labels: {app: discount}}
+    spec:
+      containers:
+        - name: discount
+          image: novamarket/discount:1.1.0
+          ports: [{containerPort: 3000}]
+          env:
+            - {name: PORT, value: "3000"}
+            - {name: SERVICE_NAME, value: discount}
+            - {name: DATABASE_URL, valueFrom: {secretKeyRef: {name: postgres-secret, key: DATABASE_URL}}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: discount}
+spec:
+  selector: {app: discount}
+  ports: [{port: 3000, targetPort: 3000}]
