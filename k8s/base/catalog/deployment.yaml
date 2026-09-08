@@ -31,16 +31,6 @@ spec:
               value: "false"
             - name: S3_BUCKET
               value: novamarket
-            - name: S3_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: minio-secret
-                  key: access-key
-            - name: S3_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: minio-secret
-                  key: secret-key
           readinessProbe:
             httpGet:
               path: /ready
