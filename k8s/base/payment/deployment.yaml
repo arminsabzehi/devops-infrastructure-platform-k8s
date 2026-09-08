@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: payment}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: payment}}
+  template:
+    metadata: {labels: {app: payment}}
+    spec:
+      containers:
+        - name: payment
+          image: novamarket/payment:1.1.0
+          ports: [{containerPort: 3000}]
+          env:
+            - {name: PORT, value: "3000"}
+            - {name: SERVICE_NAME, value: payment}
+            - {name: DATABASE_URL, valueFrom: {secretKeyRef: {name: postgres-secret, key: DATABASE_URL}}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: payment}
+spec:
+  selector: {app: payment}
+  ports: [{port: 3000, targetPort: 3000}]
