@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: reviews}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: reviews}}
+  template:
+    metadata: {labels: {app: reviews}}
+    spec:
+      containers:
+        - name: reviews
+          image: novamarket/reviews:1.1.0
+          ports: [{containerPort: 3000}]
+          env:
+            - {name: PORT, value: "3000"}
+            - {name: SERVICE_NAME, value: reviews}
+            - {name: DATABASE_URL, valueFrom: {secretKeyRef: {name: postgres-secret, key: DATABASE_URL}}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: reviews}
+spec:
+  selector: {app: reviews}
+  ports: [{port: 3000, targetPort: 3000}]
