@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: catalog
-          image: reg.test.local:8082/novamarket/catalog:1.4.1
+          image: reg.test.local:8082/novamarket/catalog:1.5.0
           ports:
             - containerPort: 3000
           env:
@@ -43,6 +43,12 @@ spec:
                   key: secret-key
             - name: S3_PRESIGN_EXPIRY
               value: "3600"
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: catalog-admin-secret
+                  key: ADMIN_TOKEN
+                  optional: true
           readinessProbe:
             httpGet:
               path: /ready
