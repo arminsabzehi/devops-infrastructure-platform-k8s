@@ -19,6 +19,7 @@ data:
       location /api/auth/ { proxy_pass http://user:3000/api/auth/; }
       location /api/users/ { proxy_pass http://user:3000/api/users/; }
       location /api/addresses/ { proxy_pass http://user:3000/api/addresses/; }
+      location /api/admin/ { proxy_pass http://catalog:3000/api/admin/; }
       location /api/products { proxy_pass http://catalog:3000/api/products; }
       location /api/categories { proxy_pass http://catalog:3000/api/categories; }
       location /api/search { proxy_pass http://search:3000/api/search; }
