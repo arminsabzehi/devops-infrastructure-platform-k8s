@@ -15,6 +15,7 @@ spec:
       containers:
         - name: catalog
           image: reg.test.local:8082/novamarket/catalog:1.5.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
