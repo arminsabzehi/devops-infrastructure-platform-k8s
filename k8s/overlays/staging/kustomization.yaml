@@ -1,0 +1,81 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: digino-stage
+
+resources:
+  - ../../base
+
+images:
+  - name: novamarket/gateway
+    newName: reg.test.local:5000/novamarket/gateway
+    newTag: "1.1.2"
+  - name: novamarket/frontend
+    newName: reg.test.local:5000/novamarket/frontend
+    newTag: "1.2.0"
+  - name: novamarket/shop
+    newName: reg.test.local:5000/novamarket/shop
+    newTag: "1.1.0"
+  - name: novamarket/product
+    newName: reg.test.local:5000/novamarket/product
+    newTag: "1.0.0"
+  - name: novamarket/about
+    newName: reg.test.local:5000/novamarket/about
+    newTag: "1.1.0"
+  - name: novamarket/account
+    newName: reg.test.local:5000/novamarket/account
+    newTag: "1.0.0"
+  - name: novamarket/orders
+    newName: reg.test.local:5000/novamarket/orders
+    newTag: "1.0.0"
+  - name: novamarket/checkout
+    newName: reg.test.local:5000/novamarket/checkout
+    newTag: "1.0.0"
+  - name: novamarket/admin
+    newName: reg.test.local:5000/novamarket/admin
+    newTag: "1.0.0"
+  - name: novamarket/backend
+    newName: reg.test.local:5000/novamarket/backend
+    newTag: "1.0.1"
+  - name: novamarket/catalog
+    newName: reg.test.local:5000/novamarket/catalog
+    newTag: "1.3.0"
+  - name: novamarket/cart
+    newName: reg.test.local:5000/novamarket/cart
+    newTag: "1.1.0"
+  - name: novamarket/user
+    newName: reg.test.local:5000/novamarket/user
+    newTag: "1.1.0"
+  - name: novamarket/orders-api
+    newName: reg.test.local:5000/novamarket/orders-api
+    newTag: "1.1.0"
+  - name: novamarket/payment
+    newName: reg.test.local:5000/novamarket/payment
+    newTag: "1.1.0"
+  - name: novamarket/shipping
+    newName: reg.test.local:5000/novamarket/shipping
+    newTag: "1.1.0"
+  - name: novamarket/search
+    newName: reg.test.local:5000/novamarket/search
+    newTag: "1.1.0"
+  - name: novamarket/wishlist
+    newName: reg.test.local:5000/novamarket/wishlist
+    newTag: "1.1.0"
+  - name: novamarket/reviews
+    newName: reg.test.local:5000/novamarket/reviews
+    newTag: "1.1.0"
+  - name: novamarket/notification
+    newName: reg.test.local:5000/novamarket/notification
+    newTag: "1.1.0"
+  - name: novamarket/discount
+    newName: reg.test.local:5000/novamarket/discount
+    newTag: "1.1.0"
+  - name: postgres
+    newName: reg.test.local:5000/library/postgres
+    newTag: "16.4-alpine"
+
+
+patches:
+  - path: replicas-patch.yaml
+    target:
+      kind: Deployment
