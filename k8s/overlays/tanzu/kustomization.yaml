@@ -2,8 +2,32 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: digino-tanzu
 resources:
-  - ../../base
   - namespace.yaml
+  - ../../base/postgres.yaml
+  - ../../base/db-migrate.yaml
+  - ../../base/gateway.yaml
+  - ../../base/frontend/deployment.yaml
+  - ../../base/frontend/service.yaml
+  - ../../base/shop/deployment.yaml
+  - ../../base/product/deployment.yaml
+  - ../../base/about/deployment.yaml
+  - ../../base/account/deployment.yaml
+  - ../../base/orders/deployment.yaml
+  - ../../base/checkout/deployment.yaml
+  - ../../base/admin/deployment.yaml
+  - ../../base/backend/deployment.yaml
+  - ../../base/catalog/deployment.yaml
+  - ../../base/catalog/service.yaml
+  - ../../base/user/deployment.yaml
+  - ../../base/cart/deployment.yaml
+  - ../../base/order-service/deployment.yaml
+  - ../../base/payment/deployment.yaml
+  - ../../base/shipping/deployment.yaml
+  - ../../base/search/deployment.yaml
+  - ../../base/wishlist/deployment.yaml
+  - ../../base/reviews/deployment.yaml
+  - ../../base/notification/deployment.yaml
+  - ../../base/discount/deployment.yaml
 
 images:
   - name: novamarket/gateway
@@ -72,3 +96,6 @@ images:
   - name: postgres
     newName: reg.test.local:8090/library/postgres
     newTag: "16.4-alpine"
+  - name: reg.test.local:8082/novamarket/db-migrations
+    newName: reg.test.local:8090/novamarket/db-migrations
+    newTag: "1.0.5"
