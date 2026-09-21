@@ -46,7 +46,7 @@ images:
   - name: novamarket/backend
     newName: reg.test.local:8090/novamarket/backend
     newTag: "1.0.1"
-  - name: novamarket/catalog
+  - name: reg.test.local:8082/novamarket/catalog
     newName: reg.test.local:8090/novamarket/catalog
     newTag: "1.5.0"
   - name: novamarket/cart
