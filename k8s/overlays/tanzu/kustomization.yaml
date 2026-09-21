@@ -35,6 +35,16 @@ patches:
         path: /spec/replicas
         value: 1
 
+  - target:
+      group: ""
+      version: v1
+      kind: PersistentVolumeClaim
+      name: postgres-data
+    patch: |-
+      - op: add
+        path: /spec/storageClassName
+        value: k8s-local-ds
+
 images:
   - name: novamarket/gateway
     newName: reg.test.local:8090/novamarket/gateway
