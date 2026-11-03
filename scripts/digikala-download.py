@@ -32,34 +32,45 @@ def read_manifest():
         return json.load(f)
 
 def image_urls(product):
+    images = product.get("images") or {}
+    main = images.get("main") if isinstance(images, dict) else None
     found = []
-    def add(value):
-        if isinstance(value, str) and value.startswith("https://"):
-            found.append(value)
-        elif isinstance(value, dict):
-            for key in ("url", "src", "webp_url", "webp"):
-                v = value.get(key)
-                if isinstance(v, str) and v.startswith("https://"):
-                    found.append(v)
-                    break
-    images = product.get("images")
-    if isinstance(images, list):
-        for item in images:
-            add(item)
-    elif isinstance(images, dict):
-        for key in ("main", "image", "main_image", "list"):
+
+    if isinstance(main, dict):
+        # Digikala returns URL fields as arrays, not scalar strings.
+        for key in ("url", "webp_url"):
+            values = main.get(key) or []
+            if isinstance(values, str):
+                values = [values]
+            found.extend(v for v in values if isinstance(v, str) and v.startswith("https://"))
+
+    # Fallbacks for alternate API response shapes.
+    if not found and isinstance(images, dict):
+        for key in ("image", "main_image", "list"):
             value = images.get(key)
-            if isinstance(value, list):
-                for item in value:
-                    add(item)
-            else:
-                add(value)
+            values = value if isinstance(value, list) else [value]
+            for item in values:
+                if isinstance(item, str) and item.startswith("https://"):
+                    found.append(item)
+                elif isinstance(item, dict):
+                    for field in ("url", "webp_url", "src"):
+                        urls = item.get(field) or []
+                        if isinstance(urls, str):
+                            urls = [urls]
+                        found.extend(v for v in urls if isinstance(v, str) and v.startswith("https://"))
+
     if not found:
-        add(product.get("image") or product.get("image_url") or product.get("thumbnail"))
+        for key in ("image", "image_url", "thumbnail"):
+            value = product.get(key)
+            if isinstance(value, str) and value.startswith("https://"):
+                found.append(value)
+                break
+
     return list(dict.fromkeys(found))
 
+
 def search_products(data):
-    return data.get("data", {}).get("products", []) or data.get("data", {}).get("widget", {}).get("data", {}).get("products", [])
+    return data.get("data", {}).get("products", [])
 
 def make_candidate(product):
     pid = product.get("id") or product.get("product_id")
