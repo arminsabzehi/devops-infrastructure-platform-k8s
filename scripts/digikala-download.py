@@ -104,39 +104,48 @@ def discover(items):
     print("No MinIO or database changes were made.")
 
 def download(items):
-    missing = [x["slug"] for x in items if not x.get("digikalaProductId")]
-    if missing:
-        raise RuntimeError("Select Digikala IDs in the manifest first. Missing: " + ", ".join(missing))
+    selected = [x for x in items if x.get("digikalaProductId")]
+    skipped = [x["slug"] for x in items if not x.get("digikalaProductId")]
+    if not selected:
+        raise RuntimeError("No Digikala product IDs selected in the manifest.")
     WORKDIR.mkdir(parents=True, exist_ok=True)
     report = []
-    for item in items:
-        data = get_json(BASE + "/v2/product/" + urllib.parse.quote(str(item["digikalaProductId"])) + "/")
-        product = data.get("data", {}).get("product") or data.get("data") or data.get("product") or data
-        urls = image_urls(product)
-        if not urls:
-            raise RuntimeError("No image URL in Digikala detail response for " + item["slug"])
-        raw, headers = request(urls[0])
-        content_type = headers.get("Content-Type", "").split(";")[0].lower()
-        if not content_type.startswith("image/"):
-            raise RuntimeError(f'Non-image response for {item["slug"]}: {content_type}')
-        if len(raw) < 5000:
-            raise RuntimeError(f'Image too small for {item["slug"]}: {len(raw)} bytes')
-        ext = "png" if "png" in content_type else "webp" if "webp" in content_type else "jpg"
-        dest = WORKDIR / f'{item["slug"]}.{ext}'
-        dest.write_bytes(raw)
-        report.append({
-            "slug": item["slug"],
-            "digikalaProductId": str(item["digikalaProductId"]),
-            "title": product.get("title_fa") or product.get("title") or item["query"],
-            "sourceUrl": urls[0],
-            "file": str(dest),
-            "contentType": content_type,
-            "bytes": len(raw),
-        })
-        print(f'Downloaded {item["slug"]} ({len(raw)} bytes)')
+    errors = []
+    print(f"Selected {len(selected)} product(s); skipping {len(skipped)} without IDs.")
+    for item in selected:
+        try:
+            data = get_json(BASE + "/v2/product/" + urllib.parse.quote(str(item["digikalaProductId"])) + "/")
+            product = data.get("data", {}).get("product") or data.get("data") or data.get("product") or data
+            urls = image_urls(product)
+            if not urls:
+                raise RuntimeError("No image URL in Digikala detail response")
+            raw, headers = request(urls[0])
+            content_type = headers.get("Content-Type", "").split(";")[0].lower()
+            if not content_type.startswith("image/"):
+                raise RuntimeError(f"Non-image response: {content_type}")
+            if len(raw) < 5000:
+                raise RuntimeError(f"Image too small: {len(raw)} bytes")
+            ext = "png" if "png" in content_type else "webp" if "webp" in content_type else "jpg"
+            dest = WORKDIR / f'{item["slug"]}.{ext}'
+            dest.write_bytes(raw)
+            report.append({
+                "slug": item["slug"],
+                "digikalaProductId": str(item["digikalaProductId"]),
+                "title": product.get("title_fa") or product.get("title") or item["query"],
+                "sourceUrl": urls[0],
+                "file": str(dest),
+                "contentType": content_type,
+                "bytes": len(raw),
+            })
+            print(f'Downloaded {item["slug"]} ({len(raw)} bytes)')
+        except Exception as exc:
+            errors.append({"slug": item["slug"], "digikalaProductId": str(item["digikalaProductId"]), "error": str(exc)})
+            print(f'FAILED {item["slug"]}: {exc}', file=sys.stderr)
         time.sleep(0.4)
     (WORKDIR / "download-report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Downloaded {len(report)} images to {WORKDIR}. Review before import.")
+    (WORKDIR / "download-errors.json").write_text(json.dumps(errors, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"Downloaded {len(report)}/{len(selected)} selected images to {WORKDIR}.")
+    print(f"Skipped {len(skipped)} products without IDs; failed {len(errors)} selected product(s).")
 
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "discover"
